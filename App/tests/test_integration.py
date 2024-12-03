@@ -146,7 +146,7 @@ class IntegrationTests(TestCase):
             },
             format='json'
         )
-        self.assertEqual(invalid_update_response.status_code, 404)
+        self.assertEqual(invalid_update_response.status_code, 400)
 
         # update the item
         update_response = self.client.put(

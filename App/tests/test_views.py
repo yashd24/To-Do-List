@@ -144,7 +144,7 @@ class ViewsTestCase(TestCase):
             {"title": "", "description": "Invalid description"},
             format='json'
         )
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 400)
 
     # tag validation
     def test_tag_validation(self):
