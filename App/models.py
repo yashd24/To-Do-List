@@ -13,9 +13,6 @@ class CustomUser(AbstractUser):
     user_permissions = models.ManyToManyField(
         'auth.Permission', related_name='CustomUser', blank=True)
 
-    def __str__(self):
-        return self.username
-
 
 class ToDoItems(models.Model):
     status_choices = [
@@ -39,6 +36,3 @@ class ToDoItems(models.Model):
     def save(self, *args, **kwargs):
         self.tags = list(set(self.tags))
         super().save(*args, **kwargs)
-
-    def __str__(self):
-        return self.title

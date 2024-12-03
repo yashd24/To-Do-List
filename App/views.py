@@ -27,7 +27,11 @@ class LoginUser(APIView):
     def post(self, request):
         username = request.data.get('username')
         password = request.data.get('password')
-        user = CustomUser.objects.get(username=username)
+
+        try:
+            user = CustomUser.objects.get(username=username)
+        except CustomUser.DoesNotExist:
+            return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
         if user:
             if user.check_password(password):
@@ -38,7 +42,6 @@ class LoginUser(APIView):
                     'access': str(refresh.access_token),
                 }, status=status.HTTP_200_OK)
             return Response({'message': 'Invalid Password'}, status=status.HTTP_401_UNAUTHORIZED)
-        return Response({'message': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class ToDoItemsView(APIView):
@@ -49,11 +52,12 @@ class ToDoItemsView(APIView):
     def get(self, request, pk=None):
 
         if pk:
-            item = ToDoItems.objects.get(id=pk)
-            if item:
+            try:
+                item = ToDoItems.objects.get(id=pk)
                 serializer = ItemsSerializer(item)
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response({'message': 'Item not found'}, status=status.HTTP_404_NOT_FOUND)
+            except ToDoItems.DoesNotExist:
+                return Response({'message': 'Item not found'}, status=status.HTTP_404_NOT_FOUND)
 
         else:
             items = ToDoItems.objects.filter(user=request.user)
@@ -65,8 +69,6 @@ class ToDoItemsView(APIView):
 
     def post(self, request):
         user = request.user
-        if not user:
-            return Response({'message': 'Login Required'}, status=status.HTTP_404_NOT_FOUND)
 
         data = request.data.copy()
         data['user'] = user.id
