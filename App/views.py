@@ -3,7 +3,7 @@ from .serializers import UserSerializer, ItemsSerializer
 from rest_framework.response import Response
 from .models import CustomUser, ToDoItems
 from rest_framework import status
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
@@ -56,7 +56,7 @@ class ToDoItemsView(APIView):
             return Response({'message': 'Item not found'}, status=status.HTTP_404_NOT_FOUND)
 
         else:
-            items = ToDoItems.objects.all()
+            items = ToDoItems.objects.filter(user=request.user)
 
             if items:
                 serializer = ItemsSerializer(items, many=True)
@@ -68,7 +68,7 @@ class ToDoItemsView(APIView):
         if not user:
             return Response({'message': 'Login Required'}, status=status.HTTP_404_NOT_FOUND)
 
-        data = request.data
+        data = request.data.copy()
         data['user'] = user.id
 
         serializer = ItemsSerializer(data=data, context={'request': request})
@@ -80,7 +80,8 @@ class ToDoItemsView(APIView):
     def put(self, request, pk):
         data = request.data
         item = ToDoItems.objects.get(id=pk)
-        serializer = ItemsSerializer(item, data=data)
+        serializer = ItemsSerializer(
+            item, data=data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
