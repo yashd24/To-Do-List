@@ -28,7 +28,7 @@ load_dotenv()
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['host.docker.internal', 'localhost', 'admin', '127.0.0.1','0.0.0.0','https://to-do-list-4np2.onrender.com','http://to-do-list-4np2.onrender.com']
 
 
