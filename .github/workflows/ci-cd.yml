@@ -28,7 +28,7 @@ jobs:
 
       - name: Run Black
         run: |
-          black .
+          black . --config pyproject.toml
         env:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_HOST: ${{ secrets.DB_HOST }}
@@ -39,7 +39,7 @@ jobs:
 
       - name: Run Flake8
         run: |
-          flake8 .
+          flake8 . --config .flake8
         env:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_HOST: ${{ secrets.DB_HOST }}
