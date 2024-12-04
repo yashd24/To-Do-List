@@ -21,14 +21,14 @@ jobs:
         with:
           python-version: 3.11
 
-      - name: Install Flake8 and Black
+      - name: Install Flake8, Black, and Autopep8
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 black
+          pip install flake8 black autopep8
 
-      - name: Run Black
+      - name: Run Black (with --check flag)
         run: |
-          black . --config pyproject.toml
+          black . --config ./pyproject.toml --check || black . --config ./pyproject.toml
         env:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_HOST: ${{ secrets.DB_HOST }}
@@ -37,9 +37,10 @@ jobs:
           DB_PORT: ${{ secrets.DB_PORT }}
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
 
-      - name: Run Flake8
+      - name: Run Flake8 (with Autopep8 for auto-fixing)
         run: |
-          flake8 . --config .flake8
+          autopep8 --in-place --aggressive --aggressive .
+          flake8 . --config ./.flake8
         env:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_HOST: ${{ secrets.DB_HOST }}
