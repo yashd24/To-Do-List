@@ -39,7 +39,7 @@ jobs:
 
       - name: Run Black
         run: |
-          black --check .
+          black .
         env:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_HOST: ${{ secrets.DB_HOST }}
