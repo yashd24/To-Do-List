@@ -120,7 +120,7 @@ class ViewsTestCase(TestCase):
     # Get ToDo items when no items exist
 
     def test_get_no_todo_items(self):
-        self.todo_item.delete()  # Ensure no items exist for the user
+        self.todo_item.delete()
         response = self.client.get('/items/')
         self.assertEqual(response.status_code, 404)
 
@@ -129,7 +129,6 @@ class ViewsTestCase(TestCase):
     def test_create_todo_item_invalid_data(self):
         response = self.client.post(
             '/items/',
-            # Missing required fields
             {"title": "", "description": "Invalid description"},
             format='json'
         )
@@ -140,7 +139,6 @@ class ViewsTestCase(TestCase):
     def test_update_todo_item_invalid_data(self):
         response = self.client.put(
             f'/items/{self.todo_item.id}/',
-            # Missing required fields
             {"title": "", "description": "Invalid description"},
             format='json'
         )
