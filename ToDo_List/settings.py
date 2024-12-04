@@ -28,8 +28,8 @@ load_dotenv()
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-ALLOWED_HOSTS = ['host.docker.internal', 'localhost', 'admin', '127.0.0.1','0.0.0.0','to-do-list-4np2.onrender.com']
+DEBUG = False
+ALLOWED_HOSTS = ['host.docker.internal', 'localhost', 'admin', '127.0.0.1', '0.0.0.0', 'to-do-list-4np2.onrender.com']
 
 
 # Application definition
@@ -43,12 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
+    'corsheaders',
     'App',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -75,6 +77,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'ToDo_List.wsgi.application'
+
+CORS_ALLOWED_ORIGINS = [
+    "https://to-do-list-4np2.onrender.com",
+]
 
 
 # Database
