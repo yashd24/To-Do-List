@@ -18,16 +18,18 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables from .env file
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-y@i+v1r787!=1*m!%14%tuz!=rxkmvo)cxn7jk3ofs22ykw%-!'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['host.docker.internal', 'localhost', 'admin']
+ALLOWED_HOSTS = ['host.docker.internal', 'localhost', 'admin', '127.0.0.1']
 
 
 # Application definition
@@ -39,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'App',
     'rest_framework',
     'rest_framework_simplejwt',
+    'App',
 ]
 
 MIDDLEWARE = [
@@ -78,9 +80,6 @@ WSGI_APPLICATION = 'ToDo_List.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-
-# Load environment variables from .env file
-load_dotenv()
 
 DATABASES = {
     'default': {

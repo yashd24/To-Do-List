@@ -15,29 +15,7 @@ services:
       - todo-network
     env_file:
       - .env
-    depends_on:
-      - database
 
-
-  database:
-    container_name: database
-    image: postgres:13
-    environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASS}
-      POSTGRES_DB: ${DB_NAME}
-    ports:
-      - "5432:5432"
-    networks:
-      - todo-network
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-
-volumes:
-  postgres_data:
-
-  
 networks:
   todo-network:
     driver: bridge
