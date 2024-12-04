@@ -1,8 +1,7 @@
 [tool.black]
 line-length = 88
-exlude = 
-'''
+exclude = '''
 /(
-migrations
+    migrations
 )/
 '''
