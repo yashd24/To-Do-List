@@ -2,6 +2,10 @@
 line-length = 79
 exclude = '''
 /(
+    dist|
+    build|
+    .git|
+    __pycache__|
     migrations
 )/
 '''
