@@ -12,6 +12,7 @@ services:
     volumes:
       - .:/app
       - ./static:/app/static
+      - ./staticfiles:/app/staticfiles
 
     networks:
       - todo-network
