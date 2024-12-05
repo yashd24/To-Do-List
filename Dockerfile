@@ -16,13 +16,15 @@ COPY requirements.txt /app/requirements.txt
 
 
 # Install Python dependencies
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+RUN pip install --upgrade pip 
+RUN pip install -r requirements.txt
 
 # Copy the Project into the Container
 COPY . /app
 
+# collect static and applying migrations
+RUN python manage.py collectstatic --noinput
+RUN python manage.py migrate
 
-# Run the Application
-# CMD python manage.py runserver 0.0.0.0:8000
+
 
