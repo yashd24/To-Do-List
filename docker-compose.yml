@@ -11,6 +11,8 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - ./static:/app/static
+
     networks:
       - todo-network
     env_file:
