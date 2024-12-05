@@ -1,6 +1,6 @@
 from rest_framework.test import APIClient
 from django.test import TestCase
-from App.models import CustomUser, ToDoItems
+from App.models import CustomUser
 
 
 class E2ETest(TestCase):

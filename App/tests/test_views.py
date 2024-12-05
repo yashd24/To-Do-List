@@ -64,6 +64,11 @@ class ViewsTestCase(TestCase):
         response = self.client.get(f'/items/{self.todo_item.id}/')
         self.assertEqual(response.status_code, 200)
 
+    # get todo item by id that does not exist
+    def test_get_todo_item_by_id_not_found(self):
+        response = self.client.get('/items/100/')
+        self.assertEqual(response.status_code, 404)
+
     # create todo item
     def test_create_todo_item(self):
         response = self.client.post(
