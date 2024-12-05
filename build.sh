@@ -11,8 +11,6 @@ python manage.py collectstatic --noinput
 # Apply database migrations
 python manage.py migrate
 
-# load the env variables
-export $(cat .env | xargs)
 
 # Create a superuser non interactively
 python manage.py shell -c "
