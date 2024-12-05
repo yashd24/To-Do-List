@@ -115,10 +115,10 @@ DJANGO_SUPERUSER_PASSWORD=<your_admin_password>
 ## Coverage Reports
 
 ### Unit Test
-[Unit Test Coverage Report](assets/Unit_Test_Report.png")
+[Unit Test Coverage Report](./assets/Unit_Test_Report.png")
 
 ### Integration Test
-[Integration Test Coverage Report](assets/Integration_Test_Report.png")
+[Integration Test Coverage Report](./assets/Integration_Test_Report.png")
 
 ## Contact
 For any questions or feedback, please contact [yashd2024@gmail.com](mailto:yashd2024@gmail.com).
