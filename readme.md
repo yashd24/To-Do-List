@@ -22,7 +22,7 @@ This project is a simple ToDo List application that helps users manage their tas
     ```
 2. Navigate to the project directory:
     ```bash
-    cd ToDo_List
+    cd To-Do-List
     ```
 3. Configure Environment Variables. 
 Create an `.env` file in the root directory.
@@ -64,7 +64,7 @@ DJANGO_SUPERUSER_PASSWORD=<your_admin_password>
     ```
 2. Navigate to the project directory:
     ```bash
-    cd ToDo_List
+    cd To-Do-List
     ```
 
 3. Configure Environment Variables. 
