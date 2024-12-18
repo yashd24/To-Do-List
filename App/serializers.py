@@ -5,7 +5,7 @@ from .models import CustomUser, ToDoItems, Tags
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['name', 'email', 'username', 'password']
+        fields = '__all__'
         extra_kwargs = {
             'password': {'write_only': True}
         }
