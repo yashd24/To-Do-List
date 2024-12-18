@@ -13,6 +13,13 @@ class CustomUser(AbstractUser):
         'auth.Permission', related_name='CustomUser', blank=True)
 
 
+class Tags(models.Model):
+    tag_name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.tag_name
+
+
 class ToDoItems(models.Model):
     status_choices = [
         ('OPEN', 'Open'),
@@ -28,10 +35,6 @@ class ToDoItems(models.Model):
     title = models.CharField(max_length=100, null=False)
     description = models.TextField(max_length=1000, null=False)
     due_date = models.DateField(null=False, blank=True)
-    tags = models.JSONField(default=list, blank=True)
+    tags = models.ManyToManyField(Tags, blank=True)
     status = models.CharField(
         max_length=50, choices=status_choices, default='OPEN')
-
-    def save(self, *args, **kwargs):
-        self.tags = list(set(self.tags))
-        super().save(*args, **kwargs)

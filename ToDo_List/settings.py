@@ -28,7 +28,7 @@ load_dotenv()
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['host.docker.internal',
                  'localhost',
                  'admin',
@@ -96,11 +96,11 @@ CORS_ALLOWED_ORIGINS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': str(os.getenv('DB_NAME')),
-        'USER': str(os.getenv('DB_USER')),
-        'PASSWORD': str(os.getenv('DB_PASS')),
-        'HOST': str(os.getenv('DB_HOST')),
-        'PORT': str(os.getenv('DB_PORT')),
+        'NAME': 'todo_db', #str(os.getenv('DB_NAME')),
+        'USER': 'yash', #str(os.getenv('DB_USER')),
+        'PASSWORD': 'yash24',#str(os.getenv('DB_PASS')),
+        'HOST': 'localhost',#str(os.getenv('DB_HOST')),
+        'PORT': '5432', #str(os.getenv('DB_PORT')),
     }
 }
 AUTH_USER_MODEL = 'App.CustomUser'
