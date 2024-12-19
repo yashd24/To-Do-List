@@ -51,7 +51,7 @@ class E2ETest(TestCase):
 
         # query the db 
         items = ToDoItems.objects.all()
-        self.assertEqual(len(response.data['data']), items.count())
+        self.assertEqual(len(response.data), items.count())
 
     def test_update_todo_item(self):
         # first creating a to-do item
@@ -110,7 +110,7 @@ class E2ETest(TestCase):
 
         #query the db
         item = ToDoItems.objects.filter(id=item_id)
-        self.assertIsNone(item)
+        self.assertFalse(item.exists())
 
         # checking if deleted
         response = self.client.get(f'/items/{item_id}/')
