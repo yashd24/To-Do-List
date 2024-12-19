@@ -7,11 +7,8 @@ class CustomUser(AbstractUser):
     email = models.EmailField(max_length=200, unique=True)
     username = models.CharField(max_length=50, unique=True)
 
-    groups = models.ManyToManyField(
-        'auth.Group', related_name='CustomUser', blank=True)
-    user_permissions = models.ManyToManyField(
-        'auth.Permission', related_name='CustomUser', blank=True)
-
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['name', 'email']
 
 class Tags(models.Model):
     tag_name = models.CharField(max_length=50, unique=True)

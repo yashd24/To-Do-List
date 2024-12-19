@@ -42,6 +42,13 @@ class IntegrationTests(TestCase):
         )
         self.assertEqual(register_response.status_code, 201)
 
+        # Query the database to ensure the user is created
+        user = CustomUser.objects.get(username="newuser")
+        self.assertIsNotNone(user)
+        user.is_active = True
+        user.save()
+
+
         # invalid login creds
         invalid_login_response = self.client.post(
             '/login/',
@@ -84,6 +91,7 @@ class IntegrationTests(TestCase):
 
         # items not found
         get_response = self.client.get('/items/')
+
         self.assertEqual(get_response.status_code, 404)
 
         # invalid create request
@@ -128,6 +136,9 @@ class IntegrationTests(TestCase):
         self.assertEqual(create_response.status_code, 201)
         item_id = create_response.data['data']['id']
 
+        item = ToDoItems.objects.get(id=item_id)
+        self.assertIsNotNone(item)
+
         # get all items
         get_response = self.client.get('/items/')
         self.assertEqual(get_response.status_code, 200)
@@ -161,10 +172,19 @@ class IntegrationTests(TestCase):
             format='json'
         )
         self.assertEqual(update_response.status_code, 202)
+        
+        #query the database to ensure the item is created
+        item = ToDoItems.objects.get(id=item_id)
+        self.assertEqual(item.title, "Updated Task")
 
         # delete the item
         delete_response = self.client.delete(f'/items/{item_id}/')
         self.assertEqual(delete_response.status_code, 204)
+
+        # Validate that the item is deleted from the database
+        item = ToDoItems.objects.filter(id=item_id).exists()
+        self.assertFalse(item)
+
 
         # check if the item is deleted
         get_item_response = self.client.get(f'/items/{item_id}/')

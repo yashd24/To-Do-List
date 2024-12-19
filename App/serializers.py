@@ -11,9 +11,12 @@ class UserSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
+        groups = validated_data.pop('groups', None)
+        permissions = validated_data.pop('user_permissions', None)
         user = CustomUser(**validated_data)
         user.set_password(validated_data['password'])
         user.save()
+        
         return user
     
 class TagSerializer(serializers.ModelSerializer):

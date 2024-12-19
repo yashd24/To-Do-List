@@ -1,6 +1,6 @@
 from django.test import TestCase
 from rest_framework.test import APIClient
-from App.models import CustomUser, ToDoItems
+from App.models import CustomUser, ToDoItems,Tags
 
 
 class ViewsTestCase(TestCase):
@@ -9,15 +9,23 @@ class ViewsTestCase(TestCase):
         self.client = APIClient()
         self.user = CustomUser.objects.create_user(
             username="testuser", password="password")
+        
         self.todo_item = ToDoItems.objects.create(
             user=self.user,
             title="Test Task",
             description="Description of test task",
             due_date="2024-12-10",
-            status="OPEN",
-            tags=["urgent", "work"]
+            status="OPEN"
         )
+        Tags.objects.bulk_create([
+            Tags(tag_name="urgent"),
+            Tags(tag_name="work"),
+        ])
+        tags = Tags.objects.filter(tag_name__in=["urgent", "work"])
+        self.todo_item.tags.set(tags)
+
         self.client.force_authenticate(user=self.user)
+
 
     # register user
     def test_register_user(self):
@@ -32,6 +40,11 @@ class ViewsTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 201)
 
+        #query the db
+        user = CustomUser.objects.get(username="newuser")
+        self.assertIsNotNone(user)
+        
+
     def test_invalid_register(self):
         response = self.client.post(
             '/register/',
@@ -42,6 +55,8 @@ class ViewsTestCase(TestCase):
             }
         )
         self.assertEqual(response.status_code, 400)
+        user = CustomUser.objects.filter(email="test@email.com")
+        self.assertFalse(user.exists())
 
     # login user
     def test_login_user(self):
@@ -59,10 +74,17 @@ class ViewsTestCase(TestCase):
         response = self.client.get('/items/')
         self.assertEqual(response.status_code, 200)
 
+        #query the db
+        items = ToDoItems.objects.filter(user=self.user)
+        self.assertEqual(len(response.data), items.count())
+
     # get todo item by id
     def test_get_todo_item_by_id(self):
         response = self.client.get(f'/items/{self.todo_item.id}/')
         self.assertEqual(response.status_code, 200)
+
+        item = ToDoItems.objects.get(id=self.todo_item.id)
+        self.assertEqual(response.data['title'], item.title)
 
     # get todo item by id that does not exist
     def test_get_todo_item_by_id_not_found(self):
@@ -84,6 +106,10 @@ class ViewsTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 201)
 
+        item = ToDoItems.objects.get(title="New Task")
+        self.assertIsNotNone(item)
+        self.assertTrue(item.tags.filter(tag_name="home").exists())
+
     # update todo item
     def test_update_todo_item(self):
         response = self.client.put(
@@ -99,10 +125,20 @@ class ViewsTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 202)
 
+        item = ToDoItems.objects.get(id=self.todo_item.id)
+        print(item)
+        self.assertEqual(item.title, "Updated Task")
+        self.assertEqual(item.description, "Updated description")
+        self.assertTrue(item.tags.filter(tag_name="updated").exists())
+
     # delete todo item
     def test_delete_todo_item(self):
         response = self.client.delete(f'/items/{self.todo_item.id}/')
         self.assertEqual(response.status_code, 204)
+
+        item = ToDoItems.objects.filter(id=self.todo_item.id)
+        self.assertFalse(item.exists())
+        
 
     # Login with incorrect password
 
