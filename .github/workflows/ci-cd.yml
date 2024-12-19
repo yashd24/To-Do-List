@@ -85,8 +85,8 @@ jobs:
 
       - name: Run Unit Tests
         run: |
-          python manage.py test App.tests.test_views 
-          python manage.py test App.tests.test_models
+          python manage.py test App.tests.test_views --noinput
+          python manage.py test App.tests.test_models --noinput
         env:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_HOST: ${{ secrets.DB_HOST }}
@@ -97,7 +97,7 @@ jobs:
 
       - name: Run Integration Tests
         run: |
-          python manage.py test App.tests.test_integration
+          python manage.py test App.tests.test_integration --noinput
         env:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_HOST: ${{ secrets.DB_HOST }}
@@ -108,7 +108,7 @@ jobs:
 
       - name: Run E2E Tests
         run: |
-          python manage.py test App.tests.test_e2e
+          python manage.py test App.tests.test_e2e --noinput
         env:
           DB_NAME: ${{ secrets.DB_NAME }}
           DB_HOST: ${{ secrets.DB_HOST }}
